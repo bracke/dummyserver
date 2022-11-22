@@ -36,11 +36,22 @@ package body Configuration is
 
                declare
                   A_Resource : Resource_Access_Type;
+                  Content : Unbounded_String := Null_Unbounded_String;
+                  Content_Type : Unbounded_String := To_U ("text/plain; charset=iso-8859-1");
                begin
+                  if Element.Contains ("content") then
+                     Content := To_U (Element ("content").Value);
+                  end if;
+                  if Element.Contains ("content") then
+                     Content_Type := To_U (Element ("content-type").Value);
+                  end if;
+
                   A_Resource :=
                      new Configuration.Resource'
                         (Name => To_U (Element ("name").Value),
-                         Content => To_U (Element ("content").Value));
+                         Content => Content,
+                         Content_Type => Content_Type
+                         );
 
                   if not Resources.Contains (A_Resource.Name) then
                      Resources.Insert (A_Resource.Name, A_Resource);

@@ -7,6 +7,7 @@ package Configuration is
    type Resource is record
       Name : Unbounded_String;
       Content : Unbounded_String;
+      Content_Type : Unbounded_String;
    end record;
 
    type Resource_Access_Type is access Resource;

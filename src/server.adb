@@ -51,7 +51,8 @@ package body Server is
                   A_Resource := Element (Resources, To_U (Request.Resource)).all;
                   Instance'Output
                     (Stream (Connection),
-                     OK (Data => Ada.Strings.Unbounded.To_String (A_Resource.Content)));
+                     OK (Content_Type => Ada.Strings.Unbounded.To_String (A_Resource.Content_Type),
+                        Data => Ada.Strings.Unbounded.To_String (A_Resource.Content)));
 
                   if not Quiet then
                      IO.Put_Line (Ada.Strings.Unbounded.To_String (A_Resource.Content));
