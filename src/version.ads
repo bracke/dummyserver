@@ -4,4 +4,6 @@ is
    Name    : constant String := "DummyServer";
    Link    : constant String := "https://github.com/bracke/dummyserver";
 
+   function Title return String;
+
 end Version;

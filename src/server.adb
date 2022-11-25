@@ -6,6 +6,8 @@ with Black.Request, Black.Response;
 with AAA.Strings;
 with CLIC.TTY;
 
+with Version;
+
 package body Server is
 
    function To_U
@@ -25,7 +27,10 @@ package body Server is
         Ada.Strings.Fixed.Trim (Port'Image, Ada.Strings.Left));
    begin
       Listener := Convenience.Make_Server (Port => Port);
+      IO.New_Line;
+      IO.Put_Line (Version.Title);
       IO.Put_Line (TT.Info (Message));
+      IO.New_Line;
 
       loop
          declare
@@ -62,7 +67,7 @@ package body Server is
 
                   if not Quiet then
                      IO.Put_Line
-                       (TT.Success (Ada.Strings.Unbounded.To_String (A_Resource.Content)));
+                       (TT.OK (Ada.Strings.Unbounded.To_String (A_Resource.Content)));
                   end if;
                else
                   Instance'Output

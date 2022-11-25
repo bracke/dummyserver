@@ -28,21 +28,20 @@ begin
    CLIC.TTY.Enable_Color (Force => False);
 
    Define_Switch
+     (Config, Port_Option'Access, "-p:", Long_Switch => "--port:", Help => "Provide port number, default is 8080");
+
+   Define_Switch
      (Config, Q_Enabled'Access, "-q", Long_Switch => "--quiet",
       Help => "Limit output to errors");
 
    Define_Switch
      (Config, Display_Version'Access, "-v", Long_Switch => "--version", Help => "Displays version and exits");
 
-   Define_Switch
-     (Config, Port_Option'Access, "-p:", Long_Switch => "--port:",
-      Help => "Provide port number, default is 8080");
-
    Getopt (Config);
 
    if Display_Version then
       IO.New_Line;
-      IO.Put_Line (TT.Bold (Version.Name) & " (ds) Version " & TT.Emph (Version.Current));
+      IO.Put_Line (Version.Title);
       IO.Put_Line (TT.Info (TT.Underline (Version.Link)));
       IO.New_Line;
       GNAT.OS_Lib.OS_Exit (0);
