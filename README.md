@@ -12,12 +12,14 @@ The configuration consists of an array of resource definitions, only one level d
 ```json
 [
    {
-      "name" : "index.html",
-      "content" : "<html><body><h1>Hello, world</h1></body></html>"
+      "name" : "/index.html",
+      "content" : "<html><body><h1>Hello, world</h1></body></html>",
+      "content-type": "text/html"
    },
    {
       "name" : "/counter.json",
-      "content" : "{\"counter\": 23}"
+      "content" : "{\"counter\": 23}",
+      "content-type": "application/json"
    }
 ]
 ```
