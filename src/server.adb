@@ -3,6 +3,9 @@ with Ada.IO_Exceptions, Ada.Text_IO, Ada.Strings.Unbounded, Ada.Strings.Fixed, A
 with GNAT.Sockets.Convenience;
 with Black.Request, Black.Response;
 
+with AAA.Strings;
+with CLIC.TTY;
+
 package body Server is
 
    function To_U
@@ -10,21 +13,19 @@ package body Server is
      Ada.Strings.Unbounded.To_Unbounded_String;
 
    package IO renames Ada.Text_IO;
+   package TT renames CLIC.TTY;
    use Configuration.Resource_List_Type;
 
    procedure Start
      (Resources : Configuration.Resource_List_Type.Map;
-      Port      : Port_Type := 8080;
-      Quiet     : Boolean := False)
-   is
-
+      Port      : Port_Type := 8080; Quiet : Boolean := False) is
       Listener : Socket_Type;
       Message  : constant String :=
-        "Serving on http://localhost:" &
-        Ada.Strings.Fixed.Trim (Port'Image, Ada.Strings.Left);
+        "Serving on " & TT.Underline ("http://localhost:" &
+        Ada.Strings.Fixed.Trim (Port'Image, Ada.Strings.Left));
    begin
       Listener := Convenience.Make_Server (Port => Port);
-      IO.Put_Line (Message);
+      IO.Put_Line (TT.Info (Message));
 
       loop
          declare
@@ -40,28 +41,35 @@ package body Server is
 
                use Black.Response;
 
-               A_Resource :
-                 Configuration.Resource;
+               A_Resource : Configuration.Resource;
             begin
                if not Quiet then
                   IO.Put (Request.Resource & " -> ");
                end if;
 
                if Contains (Resources, To_U (Request.Resource)) then
-                  A_Resource := Element (Resources, To_U (Request.Resource)).all;
+                  A_Resource :=
+                    Element (Resources, To_U (Request.Resource)).all;
                   Instance'Output
                     (Stream (Connection),
-                     OK (Content_Type => Ada.Strings.Unbounded.To_String (A_Resource.Content_Type),
-                        Data => Ada.Strings.Unbounded.To_String (A_Resource.Content)));
+                     OK
+                       (Content_Type =>
+                          Ada.Strings.Unbounded.To_String
+                            (A_Resource.Content_Type),
+                        Data =>
+                          Ada.Strings.Unbounded.To_String
+                            (A_Resource.Content)));
 
                   if not Quiet then
-                     IO.Put_Line (Ada.Strings.Unbounded.To_String (A_Resource.Content));
+                     IO.Put_Line
+                       (TT.Success (Ada.Strings.Unbounded.To_String (A_Resource.Content)));
                   end if;
                else
                   Instance'Output
-                    (Stream (Connection), Not_Found (Resource => Request.Resource));
+                    (Stream (Connection),
+                     Not_Found (Resource => Request.Resource));
 
-                  IO.Put_Line ("Not found");
+                  IO.Put_Line (TT.Warn  ("Not found"));
                end if;
             end;
 

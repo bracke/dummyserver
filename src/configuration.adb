@@ -1,12 +1,17 @@
 pragma Ada_2022;
 with JSON.Parsers;
 with JSON.Types;
+
 with Ada.Text_IO;
 with Ada.Strings.Unbounded.Hash_Case_Insensitive;
+
+with AAA.Strings;
+with CLIC.TTY;
 
 package body Configuration is
 
    package IO renames Ada.Text_IO;
+   package TT renames CLIC.TTY;
 
    package Types is new JSON.Types (Long_Integer, Long_Float);
    package Parsers is new JSON.Parsers (Types);
@@ -31,13 +36,14 @@ package body Configuration is
    begin
       if Value.Kind = Array_Kind and then Value.Length > 0 then
          for Element of Value loop
-            if Element.Kind = Object_Kind and then
-               Element.Contains ("name") then
+            if Element.Kind = Object_Kind and then Element.Contains ("name")
+            then
 
                declare
-                  A_Resource : Resource_Access_Type;
-                  Content : Unbounded_String := Null_Unbounded_String;
-                  Content_Type : Unbounded_String := To_U ("text/plain; charset=iso-8859-1");
+                  A_Resource   : Resource_Access_Type;
+                  Content      : Unbounded_String := Null_Unbounded_String;
+                  Content_Type : Unbounded_String :=
+                    To_U ("text/plain; charset=iso-8859-1");
                begin
                   if Element.Contains ("content") then
                      Content := To_U (Element ("content").Value);
@@ -47,24 +53,22 @@ package body Configuration is
                   end if;
 
                   A_Resource :=
-                     new Configuration.Resource'
-                        (Name => To_U (Element ("name").Value),
-                         Content => Content,
-                         Content_Type => Content_Type
-                         );
+                    new Configuration.Resource'
+                      (Name    => To_U (Element ("name").Value),
+                       Content => Content, Content_Type => Content_Type);
 
                   if not Resources.Contains (A_Resource.Name) then
                      Resources.Insert (A_Resource.Name, A_Resource);
                   else
                      IO.Put_Line
-                     ("Duplicate resource definition: " &
-                        Ada.Strings.Unbounded.To_String (A_Resource.Name));
+                       (TT.Error ("Duplicate resource definition: " &
+                        TT.Emph(Ada.Strings.Unbounded.To_String (A_Resource.Name))));
                   end if;
                end;
             end if;
          end loop;
       else
-         IO.Put_Line ("No resource definitions found");
+         IO.Put_Line (TT.Error ("No resource definitions found"));
       end if;
       return Resources;
    end Read_Configuration;
