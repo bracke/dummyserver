@@ -1,0 +1,10 @@
+{
+   "folders": [
+      {
+         "path": "/Users/bent/Projects/Ada/dummyserver"
+      }
+   ],
+   "settings": {
+      "ada.projectFile": "dummyserver.gpr"
+   }
+}
