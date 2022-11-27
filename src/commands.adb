@@ -1,6 +1,8 @@
 with Commands.Topics.Issues;
 with Commands.Topics.Contribute;
 with Commands.Serve;
+with Commands.Base64;
+with Commands.Stringify;
 
 with CLIC.User_Input;
 
@@ -93,8 +95,10 @@ package body Commands is
    end Execute;
 begin
    -- Commands --
+   Sub_Cmd.Register ("Serve", new Serve.Instance);
    Sub_Cmd.Register ("General", new Sub_Cmd.Builtin_Help);
-   Sub_Cmd.Register ("General", new Serve.Instance);
+   Sub_Cmd.Register ("Tools", new Base64.Instance);
+   Sub_Cmd.Register ("Tools", new Stringify.Instance);
 
    -- Help topics --
    Sub_Cmd.Register (new Topics.Issues.Topic);

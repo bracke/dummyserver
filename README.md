@@ -50,3 +50,25 @@ DummyServer (ds) Version 1.1.0
 ⓘ Serving on <http://localhost:4200>
 
 ```
+
+## Tools
+
+DummyServer contains two tools to help you create content suitable for a configuration file.
+
+### Base64
+
+This tool converts a binary file into a string using Base64 encoding.
+
+```sh
+> ds base64 qrcode.png
+iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6A...
+```
+
+### Stringify
+
+Converts the contents of a text file into a single line string.
+
+```sh
+> ds stringify Examples/simple.json
+[       {         \"name\" : \"/index.html\",         \"content\" : \"<html><body><h1>Hello, world</h1></body></html>\",         \"content-type\": \"text/html\"      },      {         \"name\" : \"/counter.json\",         \"content\" : \"{\\"counter\\": 23}\",         \"content-type\": \"application/json\"      }]
+```

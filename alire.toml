@@ -15,3 +15,5 @@ executables = ["dummyserver"]
 json = "^5.0.3"
 [[depends-on]]
 clic = "~0.2.1"
+[[depends-on]]
+base64 = "^1.0.1"
