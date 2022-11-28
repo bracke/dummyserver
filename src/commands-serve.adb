@@ -45,7 +45,9 @@ package body Commands.Serve is
                   end if;
                   Server.Start (Resources, Port_Type'Val (Cmd.Port_Option), Is_Quiet);
                else
+                  IO.New_Line;
                   IO.Put_Line (TT.Warn ("Configuration file not found"));
+                  IO.New_Line;
                end if;
             end if;
          end;
