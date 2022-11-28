@@ -21,16 +21,22 @@ package body Commands.Stringify is
    package AA renames AAA.Strings;
    package SIO renames Ada.Streams.Stream_IO;
 
-   Useless_Characters : constant Character_Set :=
+   Line_endings : constant Character_Set :=
       Control_Set and To_Set (ASCII.LF & ASCII.CR & Character'Val (0));
 
    Quotes : constant Character_Set := To_Set ("""" & "'");
 
-   function Convert (Buffer : Ada.Streams.Stream_Element_Array) return String is
+   Whitespace : constant Character_Set := To_Set (" " & ASCII.HT);
+
+   function Convert (Buffer : Ada.Streams.Stream_Element_Array; Remove_Whitespace : Boolean := False) return String is
 
       Result : Unbounded_String;
       Current_Character : Character;
+      Useless_Characters : Character_Set := Line_endings;
    begin
+      if Remove_Whitespace then
+         Useless_Characters := Ada.Strings.Maps."or" (Useless_Characters, Whitespace);
+      end  if;
       for aValue in Buffer'Range loop
          Current_Character := Character'Val (Buffer (aValue));
          if Is_In (Current_Character, Quotes) then
@@ -76,7 +82,7 @@ package body Commands.Stringify is
                         SIO.Read (File, Buffer, Bytes_Used);
                         declare
                            Raw : constant Ada.Streams.Stream_Element_Array := Buffer (1 .. Bytes_Used);
-                           Encoded : constant String := Convert (Raw);
+                           Encoded : constant String := Convert (Raw, Cmd.Remove_Whitespace);
                         begin
                            IO.Put (Encoded);
                         end;
@@ -90,5 +96,22 @@ package body Commands.Stringify is
          end;
       end if;
    end Execute;
+
+   --------------------
+   -- Setup_Switches --
+   --------------------
+
+   overriding
+   procedure Setup_Switches
+     (Cmd    : in out Instance;
+      Config : in out CLIC.Subcommand.Switches_Configuration)
+   is
+      use CLIC.Subcommand;
+   begin
+      Define_Switch
+      (Config, Cmd.Remove_Whitespace'Access, "-w", Long_Switch => "--nowhitespace",
+         Help => "Removes blanks and tabs");
+
+   end Setup_Switches;
 
 end Commands.Stringify;

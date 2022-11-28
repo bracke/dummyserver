@@ -27,6 +27,10 @@ package Commands.Stringify is
      .New_Line
    );
 
+   overriding procedure Setup_Switches
+   (Cmd    : in out Instance;
+    Config : in out CLIC.Subcommand.Switches_Configuration);
+
    overriding function Short_Description (Cmd : Instance) return String is ("Converts the contents of a text file into a single line string");
 
    overriding function Usage_Custom_Parameters (Cmd : Instance)
@@ -34,6 +38,8 @@ package Commands.Stringify is
 
 private
 
-   type Instance is new CLIC.Subcommand.Command with null record;
+   type Instance is new CLIC.Subcommand.Command with record
+      Remove_Whitespace : aliased Boolean := False;
+   end record;
 
 end Commands.Stringify;
