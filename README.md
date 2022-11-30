@@ -14,7 +14,7 @@ The easiest way to build DummyServer is using the Alire packet manager.
 1. Download Alire from <https://alire.ada.dev>
 2. Run "alr get dummyserver" in the terminal / console.
 3. Change into the dummyserver folder that has been created by Alire.
-4. Run "alr run" in the terminal / console.
+4. Run "alr build" in the terminal / console.
 
 You  may be prompted for selecting a toolchain - just accept the default.
 
@@ -129,3 +129,33 @@ This points to a problem in the code and is likely my fault. Please consider cre
 ```sh
 ds help issues
 ```
+
+## Issues
+
+Think you've found a bug or have a new feature to suggest? Let me know!
+
+Please create an issue on the GitHub page.
+
+The issue should contain:
+
+- A description.
+- Any error message displayed.
+- The output in the terminal/console.
+- How ds was started - the full command.
+- The configuration file used.
+- The url used in the browser.
+
+Providing these details will help enormously with finding the cause of the problems and thus make it much more likely that a fix can be found.
+
+## Contributing
+
+Please consider contributing to this project. Not just for code, but also for adding to the documentation or fixing spelling mistakes.
+
+You can contribute to this project by creating pull request with your changes. You can use Git or GitHub for that. For small changes, the edit function in GitHub is probably the easiest option:
+
+- View the project on GitHub.
+- Select the "Code" tab.
+- Find the file you want to edit.
+- Click on the pen icon.
+- Do the changes You want.
+- Fill in the form in the bottom and click on "Propose changes".
