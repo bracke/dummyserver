@@ -1,4 +1,5 @@
 with Commands.Topics.Issues;
+with Commands.Topics.License;
 with Commands.Topics.Contribute;
 with Commands.Serve;
 with Commands.Base64;
@@ -103,5 +104,6 @@ begin
    -- Help topics --
    Sub_Cmd.Register (new Topics.Issues.Topic);
    Sub_Cmd.Register (new Topics.Contribute.Topic);
+   Sub_Cmd.Register (new Topics.License.Topic);
 
 end Commands;
